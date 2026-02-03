@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { Suspense, useState, useRef, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,7 +21,7 @@ type Message = {
     content: string
 }
 
-export default function StudyPage() {
+function StudyContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const sessionId = searchParams.get("sessionId")
@@ -212,5 +212,17 @@ export default function StudyPage() {
                 </p>
             </div>
         </Card>
+    )
+}
+
+export default function StudyPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex h-[calc(100vh-8rem)] items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+        }>
+            <StudyContent />
+        </Suspense>
     )
 }
